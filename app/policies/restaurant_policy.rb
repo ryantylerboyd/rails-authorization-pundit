@@ -5,7 +5,7 @@ class RestaurantPolicy < ApplicationPolicy
     #   scope.all
     # end
     def resolve
-      scope.all
+      user.admin? ? scope.all : scope.where(user: user)
     end
   end
 
@@ -18,12 +18,12 @@ class RestaurantPolicy < ApplicationPolicy
   end
 
   def update?
-    record.user == user
+    record.user == user || user.admin?
     # record: the restaurant passed to the `authorize` method in controller
     # user: the `current_user` signed in with Devise
   end
 
   def destroy?
-    record.user == user
+    record.user == user || user.admin?
   end
 end
