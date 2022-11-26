@@ -3,27 +3,30 @@ class RestaurantsController < ApplicationController
 
   # GET /restaurants or /restaurants.json
   def index
-    @restaurants = Restaurant.all
+    @restaurants = policy_scope(Restaurant)
   end
 
   # GET /restaurants/1 or /restaurants/1.json
   def show
+    authorize @restaurant
   end
 
   # GET /restaurants/new
   def new
     @restaurant = Restaurant.new
+    authorize @restaurant
   end
 
   # GET /restaurants/1/edit
   def edit
+    authorize @restaurant
   end
 
   # POST /restaurants or /restaurants.json
   def create
     @restaurant = Restaurant.new(restaurant_params)
     @restaurant.user = current_user
-
+    authorize @restaurant
     respond_to do |format|
       if @restaurant.save
         format.html { redirect_to restaurant_url(@restaurant), notice: "Restaurant was successfully created." }
@@ -37,6 +40,7 @@ class RestaurantsController < ApplicationController
 
   # PATCH/PUT /restaurants/1 or /restaurants/1.json
   def update
+    authorize @restaurant
     respond_to do |format|
       if @restaurant.update(restaurant_params)
         format.html { redirect_to restaurant_url(@restaurant), notice: "Restaurant was successfully updated." }
@@ -50,6 +54,7 @@ class RestaurantsController < ApplicationController
 
   # DELETE /restaurants/1 or /restaurants/1.json
   def destroy
+    authorize @restaurant
     @restaurant.destroy
 
     respond_to do |format|

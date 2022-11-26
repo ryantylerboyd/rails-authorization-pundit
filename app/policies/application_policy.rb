@@ -13,7 +13,7 @@ class ApplicationPolicy
   end
 
   def show?
-    false
+    authorize @restaurant
   end
 
   def create?
